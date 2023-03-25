@@ -40,7 +40,7 @@ stmt = "INSERT INTO courses (course_name, course_desc) VALUES (%s, %s)"
 
 # Loop through the list and execute the INSERT statement for each course
 for course in course_list:
-    values = (course['course_name'], course['course_desc'])
+    values = (course[0], course[1])
     cursor = cnx.cursor()
     cursor.execute(stmt, values)
     cnx.commit()
