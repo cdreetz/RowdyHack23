@@ -32,7 +32,7 @@ import mysql.connector
 # Establish a connection to the MySQL server
 cnx = mysql.connector.connect(user='admin', 
                               password='`cxH2lf;bxDPF3|3',
-                              host='us-south-usefulscore',
+                              host='db.cnet.dev',
                               database='main')
 
 # Prepare a SQL INSERT statement to save the course names and descriptions
