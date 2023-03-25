@@ -35,6 +35,24 @@ cnx = mysql.connector.connect(user='admin',
                               host='db.cnet.dev',
                               database='main')
 
+# check if table exists
+cursor = cnx.cursor()
+cursor.execute("SHOW TABLES LIKE 'courses'")
+result = cursor.fetchone()
+if result:
+    print("The 'courses' table already exists")
+else:
+    # create the courses table if it does not exist
+    cursor.execute("""
+        CREATE TABLE courses (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            course_name VARCHAR(255),
+            course_desc VARCHAR(255)
+        )
+    """)
+    print("The 'courses' table has been created")
+cursor.close()
+
 # Prepare a SQL INSERT statement to save the course names and descriptions
 stmt = "INSERT INTO courses (course_name, course_desc) VALUES (%s, %s)"
 
