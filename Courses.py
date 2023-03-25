@@ -31,7 +31,7 @@ import mysql.connector
 
 # Establish a connection to the MySQL server
 cnx = mysql.connector.connect(user='admin', 
-                              password='`cxH2lf;bxDPF3|3',
+                              password='`cxH2lf;bxDPF3|s',
                               host='db.cnet.dev',
                               database='main')
 
