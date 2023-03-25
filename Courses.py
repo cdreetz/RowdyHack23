@@ -20,11 +20,11 @@ for course in soup.find_all('div', {'class': 'courseblock'}):
     course_desc = course.find('p', {'class': 'courseblockdesc'}).get_text().strip()
 
     # process the course name and description
-    course_names = nlp(course_name)
-    course_descs = nlp(course_desc)
+    #course_names = nlp(course_name)
+    #course_descs = nlp(course_desc)
 
     # add the course name and description to the list as a tuple of spacy doc objects
-    course_list.append((course_names, course_descs))
+    course_list.append((course_name, course_desc))
 
 
 import mysql.connector
