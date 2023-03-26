@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Select Your Career and Course</title>
+    <!-- Include the jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <form>
+      <h2>Select Your Career!</h2>
+      <input type="checkbox" name="career" value="data analyst"> Data Analyst<br>
+      <input type="checkbox" name="career" value="data scientist"> Data Scientist<br>
+      <input type="checkbox" name="career" value="data engineer"> Data Engineer<br>
+      <input type="checkbox" name="career" value="machine learning engineer"> Machine Learning Engineer<br><br>
+      
+      <h2>Select Your Course!</h2>
+      <select name="course" id="course">
+        <option value="">--Select a Course--</option>
+        <option value="course1">Course 1</option>
+        <option value="course2">Course 2</option>
+        <option value="course3">Course 3</option>
+        <!-- Add more options as needed -->
+      </select><br><br>
+      
+      <input type="button" value="Submit" onclick="getCourseData()">
+    </form>
+    
+    <div id="course-data">
+      <!-- This is where the course data will be displayed -->
+    </div>
+    
+    <script>
+      function getCourseData() {
+        // Get the selected career and course
+        var career = [];
+        $('input[name="career"]:checked').each(function() {
+          career.push($(this).val());
+        });
+        var course = $('#course').val();
+        
+        // Send an AJAX request to the Django REST API to retrieve the course data
+        $.ajax({
+          url: '/api/get_course_data/',
+          method: 'POST',
+          data: {
+            'career': career,
+            'course': course
+          },
+          success: function(response) {
+            // Display the course data in the 'course-data' div
+            $('#course-data').html('');
+            for (var i = 0; i < response.length; i++) {
+              var course = response[i];
+              var html = '<h3>' + course.course_name + '</h3>';
+              html += '<p>Career: ' + course.career + '</p>';
+              html += '<p>Description: ' + course.description + '</p>';
+              $('#course-data').append(html);
+            }
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
