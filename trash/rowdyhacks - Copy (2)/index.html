@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Student Career </title>
+	<link rel="stylesheet" type="text/css" href="src/css/style.css">
+	<style>
+		body {
+			background-color: #3f3f3f;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<img src="https://drive.google.com/uc?export=view&id=1ihgp8yXGA-Y7RcfxyRuSoKJD7rvT83Iu" alt="Logo" class="logo">
+		</div>
+		<!-- Select Your Major -->
+		<div class="section">
+			<label for="career-dropdown">Select Your Major:</label>
+			<select id="career-dropdown">
+				<option value="">Select Career</option>
+				<option value="data-analyst">Data Analyst</option>
+				<option value="data-scientist">Data Scientist</option>
+				<option value="data-engineer">Data Engineer</option>
+				<option value="ml-engineer">Machine Learning Engineer</option>
+			</select>
+		</div>
+
+		<!-- Select Your Class -->
+		<div class="section" id="course-section" style="display: none;">
+			<label for="course-dropdown">Select Your Course:</label>
+			<select id="course-dropdown">
+				<option value="">Select Course</option>
+			</select>
+		</div>
+
+		<!-- Class stats -->
+		<div class="section" id="course-stats-section" style="display: none;">
+			<h2>Course Score Stats</h2>
+			<p id="course-stats"></p>
+			<div class="progress-bar">
+				<div class="progress" style="width: 18.3%">18.3%</div>
+			  </div>
+			  
+		</div>
+		
+	</div>
+	<script src="src/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Course Data</title>
+    <style> 
+      body {
+        margin: auto;
+         width: 50%;
+      }
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 5px;
+        text-align: left;
+      }
+      th {
+        background-color: #dcdcdc;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Selected Course: {{ selected_course }}</h2>
+    <table>
+      <tr>
+        <th>Course</th>
+        <th>Phrases</th>
+        <th>phrase_ratios</th>
+      </tr>
+      {% for phrase, count, ratio in roles_counts %}
+      <tr>
+        <td>{{ selected_course }}</td>
+        <td>{{ course_desc }}</td>
+        <td>{{ phrase_ratios }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

@@ -17,7 +17,7 @@ for course in soup.find_all('div', {'class': 'courseblock'}):
 
     # extract the coure name and description and remove whitespace
     course_name = course.find('p', {'class': 'courseblocktitle'}).get_text().strip()
-    course_desc = course.find('p', {'class': 'courseblockdesc'}).get_text().strip()
+    course_desc = course.find('p', {'class': 'courseblockdesc'}).get_text().strip()[:1000]
 
     # process the course name and description
     #course_names = nlp(course_name)
@@ -25,7 +25,6 @@ for course in soup.find_all('div', {'class': 'courseblock'}):
 
     # add the course name and description to the list as a tuple of spacy doc objects
     course_list.append((course_name, course_desc))
-
 
 import mysql.connector
 
@@ -47,7 +46,7 @@ else:
         CREATE TABLE courses (
             id INT AUTO_INCREMENT PRIMARY KEY,
             course_name VARCHAR(255),
-            course_desc VARCHAR(255)
+            course_desc VARCHAR(1000)
         )
     """)
     print("The 'courses' table has been created")
@@ -55,6 +54,7 @@ cursor.close()
 
 # Prepare a SQL INSERT statement to save the course names and descriptions
 stmt = "INSERT INTO courses (course_name, course_desc) VALUES (%s, %s)"
+
 
 # Loop through the list and execute the INSERT statement for each course
 for course in course_list:
@@ -66,5 +66,4 @@ for course in course_list:
 
 # Close the database connection
 cnx.close()
-
 

@@ -2,6 +2,11 @@
 <html>
   <head>
     <title>Select Your Career and Course</title>
+    <style> 
+      body {
+        margin: auto;
+         width: 50%;
+      }</style>
     <!-- Include the jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
@@ -16,9 +21,14 @@
       <h2>Select Your Course!</h2>
       <select name="course" id="course">
         <option value="">--Select a Course--</option>
-        <option value="course1">Course 1</option>
-        <option value="course2">Course 2</option>
-        <option value="course3">Course 3</option>
+        <option value="STA 4143.  Data Mining.">STA 4143.  Data Mining.</option>
+        <option value="STA 4713.  Applied Regression Analysis.">STA 4713.  Applied Regression Analysis.</option>
+        <option value="STA 4643.  Introduction to Stochastic Processes.">STA 4643.  Introduction to Stochastic Processes.</option>
+        <option value="STA 4753.  Time-Series Analysis.">STA 4753.  Time-Series Analysis.</option>
+        <option value="STA 4903.  Applied Survival Analysis.">STA 4903.  Applied Survival Analysis.</option>
+        <option value="STA 4233.  Introduction to Programming and Data Management in R.">STA 4233.  Introduction to Programming and Data Management in R.</option>
+
+
         <!-- Add more options as needed -->
       </select><br><br>
       
@@ -32,18 +42,18 @@
     <script>
       function getCourseData() {
         // Get the selected career and course
-        var career = [];
-        $('input[name="career"]:checked').each(function() {
-          career.push($(this).val());
+        var job = [];
+        $('input[name="job"]:checked').each(function() {
+          job.push($(this).val());
         });
         var course = $('#course').val();
         
         // Send an AJAX request to the Django REST API to retrieve the course data
         $.ajax({
           url: '/api/get_course_data/',
-          method: 'POST',
+          method: 'GET',
           data: {
-            'career': career,
+            'job': job,
             'course': course
           },
           success: function(response) {
@@ -52,7 +62,7 @@
             for (var i = 0; i < response.length; i++) {
               var course = response[i];
               var html = '<h3>' + course.course_name + '</h3>';
-              html += '<p>Career: ' + course.career + '</p>';
+              html += '<p>Job: ' + course.job + '</p>';
               html += '<p>Description: ' + course.description + '</p>';
               $('#course-data').append(html);
             }

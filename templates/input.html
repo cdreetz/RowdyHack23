@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Select Your Career and Course</title>
+    <style> 
+      body {
+        margin: auto;
+        width: 50%;
+      }
+    </style>
+    <!-- Include the jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <form method="post" action="/">
+      <h2>Select Your Career!</h2>
+      <input type="checkbox" name="job" value="data analyst"> Data Analyst<br>
+      <input type="checkbox" name="job" value="data scientist"> Data Scientist<br>
+      <input type="checkbox" name="job" value="data engineer"> Data Engineer<br>
+      <input type="checkbox" name="job" value="machine learning engineer"> Machine Learning Engineer<br><br>
+      
+      <h2>Select Your Course!</h2>
+      <select name="course">
+        <option value="">--Select a Course--</option>
+        {% for course in course_names %}
+        <option value="{{ course }}">{{ course }}</option>
+        {% endfor %}
+      </select><br><br>
+      
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
