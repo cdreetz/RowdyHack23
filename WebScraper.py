@@ -7,6 +7,9 @@ import urllib
 from selenium.common.exceptions import NoSuchElementException
 from random import shuffle
 import mysql.connector
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+import certifi
 
 
 
@@ -55,7 +58,7 @@ class StackScraper(Bot):
 
     def scroll_into_view(self, element):
         try:
-            self.driver.execute_script("arguements[0].scrollIntoView(true);", element)
+            self.driver.execute_script("return arguments[0].scrollIntoView(true);", element)
         except Exception as e:
             print(f"Error while scrolling to element: {e}")
 
@@ -92,60 +95,41 @@ class StackScraper(Bot):
             By.XPATH, ".//span[@class='HBvzbc']").text
         return description
     
+
     def save_job(self, job, role_name, company):
         print(job.keys()) # check the keys in job dictionary
         if self.verbose:
             print(f'Saving {role_name} job at {company}')
         try:
-            # Set up MySQL server connection
-            host = '34.174.152.9'
-            database = 'main'
-            user = 'admin'
-            password = '`cxH2lf;bxDPF3|s'
-            cnxn = mysql.connector.connect(
-                host=host,
-                database=database,
-                user=user,
-                password=password
-            )
-            cursor = cnxn.cursor()
-            print(f"Connected to MySQL server")
-            
-            # Check if table exists, create table if not exists
-            table_name = 'jobs'
-            if self.verbose:
-                print(f"Checking if table {table_name} exists...")
-            cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
-            result = cursor.fetchone()
-            if not result:
-                if self.verbose:
-                    print(f"Table {table_name} does not exist, creating table...")
-                cursor.execute(f"CREATE TABLE {table_name} (id varchar(255), role varchar(255), company varchar(255), description LONGTEXT)")
-                cnxn.commit()
-                if self.verbose:
-                    print(f"Table {table_name} created.")
-                
-            # Check if job already exists in table
+            # Set up MongoDB connection
+            uri = "mongodb+srv://cdreetz:Xue5CboEBAW1UIim@cluster0.hxuskkk.mongodb.net/?retryWrites=true&w=majority"
+            # Create a new client and connect to the server
+            client = MongoClient(uri, tlsCAFile=certifi.where())
+           
+            db = client['Cluster0']
+            jobs_collection = db['jobs']
+            print(f"Connected to MongoDB server")
+
+            # Check if job already exists in collection
             if self.verbose:
                 print(f"Checking if job ID {job['id']} already exists...")
-            cursor.execute(f"SELECT COUNT(*) FROM {table_name} WHERE id='{job['id']}'")
-            count = cursor.fetchone()[0]
+            count = jobs_collection.count_documents({'id': job['id']})
             if count > 0:
                 if self.verbose:
                     print(f"Job ID {job['id']} already exists")
                 return
-            
-            # Insert job into table
+
+            # Insert job into collection
             if self.verbose:
-                print(f"Inserting job ID {job['id']} into table {table_name}...")
-            cursor.execute(f"INSERT INTO {table_name} (id, role, company, description) VALUES (%s, %s, %s, %s)", (job['id'], role_name, company, job['description']))
-            cnxn.commit()
+                print(f"Inserting job ID {job['id']} into collection {jobs_collection}...")
+            jobs_collection.insert_one({'id': job['id'], 'role': role_name, 'company': company, 'description': job['description']})
             if self.verbose:
-                print(f"Job ID {job['id']} inserted into table {table_name}.")
+                print(f"Job ID {job['id']} inserted into collection {jobs_collection}.")
         except Exception as e:
             print(f"Error saving job ID {job['id']}: {str(e)}")
         finally:
-            cnxn.close()
+            client.close()
+
 
 
 
